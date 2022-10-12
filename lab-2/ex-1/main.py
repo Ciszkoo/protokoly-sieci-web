@@ -4,12 +4,12 @@ host = "host"
 port = "port"
 username = "username"
 
-ssh = paramiko.SSHClient()
-key = paramiko.Ed25519Key.from_private_key_file("path/to/key")
-ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-ssh.connect(hostname=host, port=port, username=username, pkey=key)
+sshClient = paramiko.SSHClient()
+sshClient.load_system_host_keys()
+sshClient.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+sshClient.connect(hostname=host, port=port, username=username)
 
-stdin, stdout, stderr = ssh.exec_command("who | wc -l")
+stdin, stdout, stderr = sshClient.exec_command("who | wc -l")
 lines = stdout.readlines()
 
 for line in lines:
